@@ -1,0 +1,22 @@
+##Boucle foreach (non retenue à cause de la "," de fin) : 
+
+<?php foreach ($tagsArray as $tag) { ?>
+<a href=""><?php echo "#".$tag ?></a>
+<?php } ?> 
+
+##Équivaut à :
+
+<?php for($i = 0; $i < count($tagsArray); $i++) { ?>
+    <?php if($i === count($tagsArray)-1) { ?>
+    <a href=""><?php echo "#".$tagsArray[$i] ?></a>
+    <?php } else { ?>
+    <a href=""><?php echo "#".$tagsArray[$i] ?></a>, 
+    <?php } ?>
+<?php } ?>
+
+//
+
+##Modèle : 
+
+echo "<pre>" . print_r($post, 1) . "</pre>";
+-> pour afficher tous les éléments de la requêtes en preview
