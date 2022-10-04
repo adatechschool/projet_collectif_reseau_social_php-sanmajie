@@ -1,6 +1,13 @@
 <?php
+
+$conf  = include('config.php');
+$hostname = $conf->hostname;
+$username = $conf->username;
+$password = $conf->password;
+$db = $conf->db;
+
 // Etape 1: Ouvrir une connexion avec la base de donnée.
-$mysqli = new mysqli("localhost:8889", "root", "root", "socialnetwork");
+$mysqli = new mysqli($hostname, $username, $password, $db);
 //verification
 if ($mysqli->connect_errno)
 {
