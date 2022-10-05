@@ -18,46 +18,14 @@
                 </section>
             </aside>
             <main>
-                <!-- L'article qui suit est un exemple pour la présentation et 
-                  @todo: doit etre retiré -->
-                <article>
-                    <h3>
-                        <time datetime='2020-02-01 11:12:13' >31 février 2010 à 11h12</time>
-                    </h3>
-                    <address>par AreTirer</address>
-                    <div>
-                        <p>Ceci est un paragraphe</p>
-                        <p>Ceci est un autre paragraphe</p>
-                        <p>... de toutes manières il faut supprimer cet 
-                            article et le remplacer par des informations en 
-                            provenance de la base de donnée (voir ci-dessous)</p>
-                    </div>                                            
-                    <footer>
-                        <small>♥1012 </small>
-                        <a href="">#lorem</a>,
-                        <a href="">#piscitur</a>,
-                    </footer>
-                </article>               
                 <?php include('dbconnect.php'); ?>
                 
                 <?php
-                /*
-                  // C'est ici que le travail PHP commence
-                  // Votre mission si vous l'acceptez est de chercher dans la base
-                  // de données la liste des 5 derniers messsages (posts) et
-                  // de l'afficher
-                  // Documentation : les exemples https://www.php.net/manual/fr/mysqli.query.php
-                  // plus généralement : https://www.php.net/manual/fr/mysqli.query.php
-                 */
-
-                // Etape 2: Poser une question à la base de donnée et récupérer ses informations
-                // cette requete vous est donnée, elle est complexe mais correcte, 
-                // si vous ne la comprenez pas c'est normal, passez, on y reviendra
                 $laQuestionEnSql = "
                     SELECT posts.content,
                     posts.created,
-                    users.alias as author_name,  
-                    count(likes.id) as like_number,  
+                    users.alias AS author_name,  
+                    count(likes.id) AS like_number,  
                     GROUP_CONCAT(DISTINCT tags.label) AS taglist 
                     FROM posts
                     JOIN users ON  users.id=posts.user_id
@@ -68,48 +36,81 @@
                     ORDER BY posts.created DESC  
                     LIMIT 5
                     ";
+
+                //LA REQUÊTE SQL ÉXPLIQUÉE :
+
+                // SELECT posts.content, posts.created -> dans la table "posts", on récupère les valeurs des colonnes "content" et "created"
+
+                // users.alias as author_name -> dans la table "users", on stocke les valeurs de la colonne "alias" sous le nom temporaire "author_name" (ce nom temporaire n'est valable QUE dans la requête !)
+
+                //count(likes.id) as like_number -> dans la table "users", on stocke l'addition des id sous le nom temporaire "like_number"
+
+                //GROUP_CONCAT(DISTINCT tags.label) AS taglist -> regroupe les valeurs non nulles de la colonne "label" dans la table "tags" en une chaîne de caractère sous le nom temporaire taglist (DISTINCT supprime les doublons)
+
+                //FROM posts 
+                //JOIN users ON users.id=posts.user_id -> jointure entre la table "posts" et la table "users", lorsque les valeurs "user_id" dans "posts" et "id" dans  "users" sont identiques
+                //LEFT JOIN posts_tags ON posts.id = posts_tags.post_id -> jointure entre la table "posts" et la table "posts_tag", lorsque les valeurs "post_id" dans "posts_tag" et "id" dans "posts" sont identiques
+                //LEFT JOIN tags ON posts_tags.tag_id  = tags.id  -> jointure entre la table "posts" et la table "tags", lorsque les valeurs "tag_id" dans "posts_tags" et "id" dans "tags" sont identiques
+                //LEFT JOIN likes ON likes.post_id  = posts.id  -> jointure entre la table "posts" et la table "likes", lorsque les valeurs "post_id" dans "likes" et "id" dans "posts" sont identiques
+
+                //GROUP BY posts.id -> groupe le jeu de résultats (parce qu'on a du COUNT et du GROUP_CONCAT)
+
+                //ORDER BY posts.created DESC -> trie le résultat selon la date de création du post ("post.created") par ordre décroissant (du dernier au premier)
+
+                //LIMIT 5 -> dans une limite de 5 éléments
+
                 $lesInformations = $mysqli->query($laQuestionEnSql);
+                //On stocke dans $LesInformations le résultat de la requête SQL $laQuestionEnSql appliquée à l'objet $mysqli (connexion avec la base de donnée)
+                
                 // Vérification
                 if ( ! $lesInformations)
                 {
                     echo "<article>";
                     echo("Échec de la requete : " . $mysqli->error);
                     echo("<p>Indice: Vérifiez la requete  SQL suivante dans phpmyadmin<code>$laQuestionEnSql</code></p>");
+                    echo "</article>";
                     exit();
                 }
 
-                // Etape 3: Parcourir ces données et les ranger bien comme il faut dans du html
-                // NB: à chaque tour du while, la variable post ci dessous reçois les informations du post suivant.
                 while ($post = $lesInformations->fetch_assoc())
                 {
-                    //la ligne ci-dessous doit etre supprimée mais regardez ce 
-                    //qu'elle affiche avant pour comprendre comment sont organisées les information dans votre 
-                    echo "<pre>" . print_r($post, 1) . "</pre>";
-
-                    // @todo : Votre mission c'est de remplacer les AREMPLACER par les bonnes valeurs
-                    // ci-dessous par les bonnes valeurs cachées dans la variable $post 
-                    // on vous met le pied à l'étrier avec created
-                    // 
-                    // avec le ? > ci-dessous on sort du mode php et on écrit du html comme on veut... mais en restant dans la boucle
+                    $tagsArray = explode(",", $post['taglist']);
+                    
                     ?>
+
+                    <!-- 
+                    La fonction fetch_assoc() lit une ligne de résultat (ici $lesInformations) sous forme de tableau associatif ; renvoie NULL s'il n'y a plus de lignes dans le jeu de résultat -> la boucle While parcourt le tableau ligne par ligne et s'arrête lorsque $post == NULL (la fin du tableau associatif) 
+                    puis on split la string $post['taglist'] en un tableau $tagsArray
+                    -->
+
+                    <!-- la boucle While modifie le DOM de manière dynamique :  
+                    on injecte la date de création du post, son auteur, son contenu, le nombre de likes et les tags
+                    du premier élément du tableau associatif, puis du second... jusqu'au dernier
+                    -->
                     <article>
                         <h3>
                             <time><?php echo $post['created'] ?></time>
                         </h3>
-                        <address>AREMPLACER</address>
+                        <address>par <?php echo $post['author_name'] ?></address>
                         <div>
-                            <p>AREMPLACER</p>
+                            <p><?php echo $post['content'] ?></p>
                         </div>
                         <footer>
-                            <small>♥ AREMPLACER </small>
-                            <a href="">AREMPLACER</a>,
+                            <small>♥ <?php echo $post['like_number'] ?></small>
+                        
+                            <?php for($i = 0; $i < count($tagsArray); $i++) { ?>
+                                <?php if($i === count($tagsArray)-1) { ?>
+                                <a href=""><?php echo "#".$tagsArray[$i] ?></a>
+                                <?php } else { ?>
+                                <a href=""><?php echo "#".$tagsArray[$i] ?></a>, 
+                                <?php } ?>
+                                <?php } ?>
+                            <!--boucle for qui parcourt le tableau $tagsArray et qui modifie le DOM à chaque passage de boucle : ajoute un lien cliquable pour chaque tag
+                            Au dernier tag, echo sans la "," 
+                                -->
                         </footer>
                     </article>
-                    <?php
-                    // avec le <?php ci-dessus on retourne en mode php 
-                }// cette accolade ferme et termine la boucle while ouverte avant.
-                ?>
-
+                    <?php } ?>
             </main>
         </div>
     </body>
