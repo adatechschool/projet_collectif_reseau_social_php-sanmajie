@@ -97,17 +97,7 @@
                         </div>
                         <footer>
                             <small>♥ <?php echo $post['like_number'] ?></small>
-                        
-                            <?php for($i = 0; $i < count($tagsArray); $i++) { ?>
-                                <?php if($i === count($tagsArray)-1) { ?>
-                                <a href=""><?php echo "#".$tagsArray[$i] ?></a>
-                                <?php } else { ?>
-                                <a href=""><?php echo "#".$tagsArray[$i] ?></a>, 
-                                <?php } ?>
-                                <?php } ?>
-                            <!--boucle for qui parcourt le tableau $tagsArray et qui modifie le DOM à chaque passage de boucle : ajoute un lien cliquable pour chaque tag
-                            Au dernier tag, echo sans la "," 
-                                -->
+                            <?php include('tagLinks.php') ?>
                         </footer>
                     </article>
                     <?php } ?>
