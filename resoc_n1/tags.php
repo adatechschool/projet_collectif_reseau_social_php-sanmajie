@@ -66,16 +66,7 @@
                         </div>                                            
                         <footer>
                             <small>♥ <?php echo $post['like_number'] ?></small>
-                            <?php $tagsArray = explode(",", $post['taglist']);
-                                for($i = 0; $i < count($tagsArray); $i++) {
-                                ?>
-
-                                <?php if($i === count($tagsArray)-1) { ?>
-                                <a href=<?php echo "tags.php?tag_label=".$tagsArray[$i] ?>><?php echo "#".$tagsArray[$i] ?></a>
-                                <?php } else { ?>
-                                <a href=<?php echo "tags.php?tag_label=".$tagsArray[$i] ?>><?php echo "#".$tagsArray[$i] ?></a>, 
-                                <?php } ?>
-                            <?php } ?>
+                            <?php include('tagLinks.php') ?>
                         </footer>
                     </article>
                 <?php } ?>
