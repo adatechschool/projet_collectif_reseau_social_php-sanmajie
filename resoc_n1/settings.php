@@ -30,11 +30,15 @@
                  * ... mais en résumé c'est une manière de passer des informations à la page en ajoutant des choses dans l'url
                  */
                 $userId = intval($_GET['user_id']);
+                /*
+                intval — Retourne la valeur numérique entière
+                _GET — Retourne l'URL en string, selon la valeur en paramétre de GET (derrière le =) 
+                */
 
                 /**
                  * Etape 2: se connecter à la base de donnée
                  */
-                $mysqli = new mysqli("localhost", "root", "root", "socialnetwork");
+                include('dbconnect.php'); 
 
                 /**
                  * Etape 3: récupérer le nom de l'utilisateur
@@ -54,29 +58,27 @@
                 $lesInformations = $mysqli->query($laQuestionEnSql);
                 if ( ! $lesInformations)
                 {
+                    echo "<article>";
                     echo("Échec de la requete : " . $mysqli->error);
+                    echo("<p>Indice: Vérifiez la requete  SQL suivante dans phpmyadmin<code>$laQuestionEnSql</code></p>");
+                    echo "</article>";
+                    exit();
                 }
                 $user = $lesInformations->fetch_assoc();
-
-                /**
-                 * Etape 4: à vous de jouer
-                 */
-                //@todo: afficher le résultat de la ligne ci dessous, remplacer les valeurs ci-après puiseffacer la ligne ci-dessous
-                echo "<pre>" . print_r($user, 1) . "</pre>";
                 ?>                
                 <article class='parameters'>
                     <h3>Mes paramètres</h3>
                     <dl>
                         <dt>Pseudo</dt>
-                        <dd>Félicie</dd>
+                        <dd><?php echo $user['alias'] ?></dd>
                         <dt>Email</dt>
-                        <dd>felicie@test.org</dd>
+                        <dd><?php echo $user['email'] ?></dd>
                         <dt>Nombre de message</dt>
-                        <dd>42</dd>
+                        <dd><?php echo $user['totalpost'] ?></dd>
                         <dt>Nombre de "J'aime" donnés </dt>
-                        <dd>12</dd>
+                        <dd><?php echo $user['totalgiven'] ?></dd>
                         <dt>Nombre de "J'aime" reçus</dt>
-                        <dd>53</dd>
+                        <dd><?php echo $user['totalrecieved'] ?></dd>
                     </dl>
 
                 </article>
