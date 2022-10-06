@@ -33,7 +33,7 @@
                         <h3><?php echo "#".$tag['label'] ?></h3>
                         <p><?php echo "id:".$tag['id'] ?></p>
                         <nav>
-                            <a href="tags.php?tag_id=<?php echo $tag['id'] ?>">Messages</a>
+                            <a href="tags.php?tag_label=<?php echo $tag['label'] ?>">Messages</a>
                         </nav>
                     </article>
                 <?php } ?>
