@@ -42,6 +42,10 @@ session_start();
             </aside>
             <main>
                 <?php
+                /**Saisir un nouveau message et l'ajouter à la base de données */
+                include('addcomment.php');
+                ?>
+                <?php
                 /**
                  * Etape 3: récupérer tous les messages de l'utilisatrice
                  */
