@@ -58,7 +58,7 @@ if ($enCoursDeTraitement)
         <dl>
             <h4><dt><label for='new_post'>Écrire un nouveau message :</label></dt></h4>
             <dd><textarea style='width:100%; max-width:100%;' name='new_post'></textarea></dd>
-            <dt><h5><legend>Sélectinner un ou plusieurs mots-clés :</legend></h5></dt>
+            <dt><h5><legend>Sélectionner un ou plusieurs mots-clés :</legend></h5></dt>
             <?php 
             $i=0;
             while ($tags = $label_tags->fetch_assoc())
