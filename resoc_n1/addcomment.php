@@ -69,23 +69,26 @@ if ($enCoursDeTraitement)
     // }
 }
 ?>
-
-<article>
-    <form action="wall.php?user_id=<?php echo $_SESSION['connected_id']; ?>" method="post">
-        <dl>
-            <h4><dt><label for='new_post'>Écrire un nouveau message :</label></dt></h4>
-            <dd><textarea style='width:100%; max-width:100%;' name='new_post'></textarea></dd>
-            <dt><h5><legend>Sélectionner un ou plusieurs mots-clés :</legend></h5></dt>
-            <?php 
-            $i=0;
-            while ($tags = $label_tags->fetch_assoc())
-            { 
-                $tag = $tags['label'];
-                ?>
-                <small><span><input type="checkbox" id="<?php echo $tag ?>" name="tag[]" value="<?php echo $tag ?>"><label for="tag">#<?php echo $tag ?></label></span></small>
-            <?php } ?>
-            <!-- <h5><dt><label for='new_tag'>...ou saisissez un nouveau mot-clé : </label><input name='new_tag'></input></dt></h5> -->
-        </dl>
-        <input type='submit' value='Publier sur mon mur'>
-    </form> 
-</article>  
+<?php
+if($_GET['user_id']==$_SESSION['connected_id']){
+?>
+    <article>
+        <form action="wall.php?user_id=<?php echo $_SESSION['connected_id']; ?>" method="post">
+            <dl>
+                <h4><dt><label for='new_post'>Écrire un nouveau message :</label></dt></h4>
+                <dd><textarea style='width:100%; max-width:100%;' name='new_post'></textarea></dd>
+                <dt><h5><legend>Sélectionner un ou plusieurs mots-clés :</legend></h5></dt>
+                <?php 
+                $i=0;
+                while ($tags = $label_tags->fetch_assoc())
+                { 
+                    $tag = $tags['label'];
+                    ?>
+                    <small><span><input type="checkbox" id="<?php echo $tag ?>" name="tag[]" value="<?php echo $tag ?>"><label for="tag">#<?php echo $tag ?></label></span></small>
+                <?php } ?>
+                <!-- <h5><dt><label for='new_tag'>...ou saisissez un nouveau mot-clé : </label><input name='new_tag'></input></dt></h5> -->
+            </dl>
+            <input type='submit' value='Publier sur mon mur'>
+        </form> 
+    </article>
+<?php } ?>
