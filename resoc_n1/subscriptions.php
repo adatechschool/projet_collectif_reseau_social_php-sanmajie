@@ -1,5 +1,5 @@
 <?php
-session_start();
+include_once('session.php');
 ?>
 <!doctype html>
 <html lang="fr">
@@ -20,12 +20,12 @@ session_start();
                         l'utilisatrice
                     <?php 
                     include_once('dbconnect.php');
-                    $currentUserId = intval($_GET['user_id']);
+                    $currentUserId = $_SESSION['connected_id'];
                 
                     $currentUser = $mysqli->query("SELECT alias FROM users WHERE users.id = '$currentUserId'")->fetch_assoc();
                     echo $currentUser['alias'];
                     ?>
-                        (dont l'id est le n° <?php echo intval($_GET['user_id']) ?>)
+                        (dont l'id est le n° <?php echo $_SESSION['connected_id'] ?>)
                         suit les messages
                     </p>
 
@@ -34,7 +34,7 @@ session_start();
             <main class='contacts'>
                 <?php
                 // Etape 1: récupérer l'id de l'utilisateur
-                $userId = intval($_GET['user_id']);
+                $userId = $_SESSION['connected_id'];
                 // Etape 2: se connecter à la base de donnée
             
                 // Etape 3: récupérer le nom de l'utilisateur
