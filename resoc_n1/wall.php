@@ -41,12 +41,13 @@ session_start();
                 </section>
             </aside>
             <main>
+                <?php include_once('addlike.php'); ?>
                 <?php
                 /**
                  * Etape 3: récupérer tous les messages de l'utilisatrice
                  */
                 $laQuestionEnSql = "
-                    SELECT posts.content, posts.created, users.alias as author_name, 
+                    SELECT posts.content, posts.created, posts.id as post_id, users.alias as author_name, 
                     COUNT(likes.id) as like_number, GROUP_CONCAT(DISTINCT tags.label) AS taglist 
                     FROM posts
                     JOIN users ON  users.id=posts.user_id
@@ -72,15 +73,17 @@ session_start();
                         <address>par <?php echo $post['author_name'] ?></address>
                         <div>
                             <p><?php echo $post['content'] ?></p>
-                        </div>                                            
+                        </div>                                           
                         <footer>
-                            <small>♥ <?php echo $post['like_number'] ?></small>
+                            <small>♥ <?php echo $post['like_number'] ?>
+                            <form action="wall.php?user_id=<?php echo $_GET['user_id'] ?>" method="post">
+                                <input type='hidden' name='post_id' value="<?php echo $post['post_id'] ?>">   
+                                <input type='submit' value="J'aime">
+                            </form></small>
                             <?php include('tagLinks.php') ?>
                         </footer>
                     </article>
                 <?php } ?>
-
-
             </main>
         </div>
     </body>
