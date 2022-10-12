@@ -1,5 +1,5 @@
 <?php
-session_start();
+include_once('session.php');
 ?>
 <!doctype html>
 <html lang="fr">
