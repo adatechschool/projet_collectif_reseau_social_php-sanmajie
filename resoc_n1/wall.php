@@ -41,9 +41,9 @@ session_start();
                 </section>
             </aside>
             <main>
-                <?php include_once('addlike.php'); ?>
                 <?php
                 /**Saisir un nouveau message et l'ajouter à la base de données */
+                include('addlike.php');
                 include('addcomment.php');
                 ?>
                 <?php
@@ -79,11 +79,12 @@ session_start();
                             <p><?php echo $post['content'] ?></p>
                         </div>                                           
                         <footer>
-                            <small>♥ <?php echo $post['like_number'] ?>
-                            <form action="wall.php?user_id=<?php echo $_GET['user_id'] ?>" method="post">
-                                <input type='hidden' name='post_id' value="<?php echo $post['post_id'] ?>">   
-                                <input type='submit' value="J'aime">
-                            </form></small>
+                            <small>
+                                <form action="wall.php?user_id=<?php echo $_GET['user_id'] ?>" method="post">
+                                    <input type='hidden' name='post_id' value="<?php echo $post['post_id'] ?>">   
+                                    <input type='submit' value="♥ <?php echo $post['like_number'] ?>">
+                                </form>
+                            </small>
                             <?php include('tagLinks.php') ?>
                         </footer>
                     </article>

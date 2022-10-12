@@ -22,12 +22,13 @@ session_start();
             </aside>
             <main>
                 <?php include('dbconnect.php'); ?>
-                
+                <?php include('addlike.php'); ?>
                 <?php
-                $laQuestionEnSql = "
+                    $laQuestionEnSql = "
                     SELECT posts.content,
                     posts.created,
                     users.alias AS author_name,
+                    posts.id AS post_id,
                     users.id AS user_id,  
                     count(likes.id) AS like_number,  
                     GROUP_CONCAT(DISTINCT tags.label) AS taglist 
@@ -41,45 +42,45 @@ session_start();
                     LIMIT 20
                     ";
 
-                //LA REQUÊTE SQL ÉXPLIQUÉE :
+                    //LA REQUÊTE SQL ÉXPLIQUÉE :
 
-                // SELECT posts.content, posts.created -> dans la table "posts", on récupère les valeurs des colonnes "content" et "created"
+                    // SELECT posts.content, posts.created -> dans la table "posts", on récupère les valeurs des colonnes "content" et "created"
 
-                // users.alias as author_name -> dans la table "users", on stocke les valeurs de la colonne "alias" sous le nom temporaire "author_name" (ce nom temporaire n'est valable QUE dans la requête !)
+                    // users.alias as author_name -> dans la table "users", on stocke les valeurs de la colonne "alias" sous le nom temporaire "author_name" (ce nom temporaire n'est valable QUE dans la requête !)
 
-                //count(likes.id) as like_number -> dans la table "users", on stocke l'addition des id sous le nom temporaire "like_number"
+                    //count(likes.id) as like_number -> dans la table "users", on stocke l'addition des id sous le nom temporaire "like_number"
 
-                //GROUP_CONCAT(DISTINCT tags.label) AS taglist -> regroupe les valeurs non nulles de la colonne "label" dans la table "tags" en une chaîne de caractère sous le nom temporaire taglist (DISTINCT supprime les doublons)
+                    //GROUP_CONCAT(DISTINCT tags.label) AS taglist -> regroupe les valeurs non nulles de la colonne "label" dans la table "tags" en une chaîne de caractère sous le nom temporaire taglist (DISTINCT supprime les doublons)
 
-                //FROM posts 
-                //JOIN users ON users.id=posts.user_id -> jointure entre la table "posts" et la table "users", lorsque les valeurs "user_id" dans "posts" et "id" dans  "users" sont identiques
-                //LEFT JOIN posts_tags ON posts.id = posts_tags.post_id -> jointure entre la table "posts" et la table "posts_tag", lorsque les valeurs "post_id" dans "posts_tag" et "id" dans "posts" sont identiques
-                //LEFT JOIN tags ON posts_tags.tag_id  = tags.id  -> jointure entre la table "posts" et la table "tags", lorsque les valeurs "tag_id" dans "posts_tags" et "id" dans "tags" sont identiques
-                //LEFT JOIN likes ON likes.post_id  = posts.id  -> jointure entre la table "posts" et la table "likes", lorsque les valeurs "post_id" dans "likes" et "id" dans "posts" sont identiques
+                    //FROM posts 
+                    //JOIN users ON users.id=posts.user_id -> jointure entre la table "posts" et la table "users", lorsque les valeurs "user_id" dans "posts" et "id" dans  "users" sont identiques
+                    //LEFT JOIN posts_tags ON posts.id = posts_tags.post_id -> jointure entre la table "posts" et la table "posts_tag", lorsque les valeurs "post_id" dans "posts_tag" et "id" dans "posts" sont identiques
+                    //LEFT JOIN tags ON posts_tags.tag_id  = tags.id  -> jointure entre la table "posts" et la table "tags", lorsque les valeurs "tag_id" dans "posts_tags" et "id" dans "tags" sont identiques
+                    //LEFT JOIN likes ON likes.post_id  = posts.id  -> jointure entre la table "posts" et la table "likes", lorsque les valeurs "post_id" dans "likes" et "id" dans "posts" sont identiques
 
-                //GROUP BY posts.id -> groupe le jeu de résultats (parce qu'on a du COUNT et du GROUP_CONCAT)
+                    //GROUP BY posts.id -> groupe le jeu de résultats (parce qu'on a du COUNT et du GROUP_CONCAT)
 
-                //ORDER BY posts.created DESC -> trie le résultat selon la date de création du post ("post.created") par ordre décroissant (du dernier au premier)
+                    //ORDER BY posts.created DESC -> trie le résultat selon la date de création du post ("post.created") par ordre décroissant (du dernier au premier)
 
-                //LIMIT 5 -> dans une limite de 5 éléments
+                    //LIMIT 5 -> dans une limite de 5 éléments
 
-                $lesInformations = $mysqli->query($laQuestionEnSql);
-                //On stocke dans $LesInformations le résultat de la requête SQL $laQuestionEnSql appliquée à l'objet $mysqli (connexion avec la base de donnée)
-                
-                // Vérification
-                if ( ! $lesInformations)
-                {
+                    $lesInformations = $mysqli->query($laQuestionEnSql);
+                    //On stocke dans $LesInformations le résultat de la requête SQL $laQuestionEnSql appliquée à l'objet $mysqli (connexion avec la base de donnée)
+
+                    // Vérification
+                    if ( ! $lesInformations)
+                    {
                     echo "<article>";
                     echo("Échec de la requete : " . $mysqli->error);
                     echo("<p>Indice: Vérifiez la requete  SQL suivante dans phpmyadmin<code>$laQuestionEnSql</code></p>");
                     echo "</article>";
                     exit();
-                }
+                    }
 
-                while ($post = $lesInformations->fetch_assoc())
-                {
+                    while ($post = $lesInformations->fetch_assoc())
+                    {
                     $tagsArray = explode(",", $post['taglist']);
-                    
+
                     ?>
 
                     <!-- 
@@ -100,11 +101,16 @@ session_start();
                             <p><?php echo $post['content'] ?></p>
                         </div>
                         <footer>
-                            <small>♥ <?php echo $post['like_number'] ?></small>
+                            <small>
+                                <form action="news.php" method="post">
+                                    <input type='hidden' name='post_id' value="<?php echo $post['post_id'] ?>">   
+                                    <input type='submit' value="♥ <?php echo $post['like_number'] ?>">
+                                </form>
+                            </small>
                             <?php include('tagLinks.php') ?>
                         </footer>
                     </article>
-                    <?php } ?>
+                <?php } ?>
             </main>
         </div>
     </body>

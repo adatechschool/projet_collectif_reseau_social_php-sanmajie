@@ -50,6 +50,7 @@ session_start();
                 </section>
             </aside>
             <main>
+                <?php include('addlike.php'); ?>
                 <?php
                 /**
                  * Etape 3: récupérer tous les messages des abonnements
@@ -58,6 +59,7 @@ session_start();
                     SELECT posts.content,
                     posts.created,
                     users.alias as author_name,
+                    posts.id AS post_id,
                     users.id AS user_id,    
                     count(likes.id) as like_number,  
                     GROUP_CONCAT(DISTINCT tags.label) AS taglist 
@@ -89,7 +91,12 @@ session_start();
                         <p><?php echo $post['content'] ?></p>
                     </div>                                            
                     <footer>
-                        <small>♥ <?php echo $post['like_number'] ?></small>
+                        <small>
+                            <form action="feed.php?user_id=<?php echo $_SESSION['connected_id']; ?>" method="post">
+                                <input type='hidden' name='post_id' value="<?php echo $post['post_id'] ?>">   
+                                <input type='submit' value="♥ <?php echo $post['like_number'] ?>">
+                            </form>
+                        </small>
                         <?php include('tagLinks.php'); ?>
                     </footer>
                 </article>
