@@ -9,7 +9,7 @@ session_start();
         <meta name="author" content="Julien Falconnet">
         <link rel="stylesheet" href="style.css"/>
     </head>
-    <body>
+    <body>    
         <?php include_once('header.php'); ?>
 
         <div id="wrapper" >
@@ -68,6 +68,8 @@ session_start();
                             // header(""Location: wall.php?user_id=" . "$_SESSION['connected_id']"");
                             // end();
                         }
+
+                        
                     }
                     ?>                     
                     <form action="login.php" method="post">
