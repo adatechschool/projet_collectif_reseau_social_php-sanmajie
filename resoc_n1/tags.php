@@ -64,7 +64,7 @@ include_once('session.php');
                         <h3>
                             <time datetime='<?php echo $post['created'] ?>' ><?php echo $post['created'] ?></time>
                         </h3>
-                        <address>par <?php echo $post['author_name'] ?></address>
+                        <address>par <a href="wall.php?user_id=<?php echo $post['user_id']; ?>"><?php echo $post['author_name'] ?></a></address>
                         <div>
                             <p><?php echo $post['content'] ?></p>
                         </div>                                            
