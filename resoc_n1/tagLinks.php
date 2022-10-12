@@ -1,9 +1,11 @@
 <?php $tagsArray = explode(",", $post['taglist']);
     for($i = 0; $i < count($tagsArray); $i++) {
-    if($i === count($tagsArray)-1) { ?>
-    <a href=<?php echo "tags.php?tag_label=".$tagsArray[$i] ?>><?php echo "#".$tagsArray[$i] ?></a>
+    if($tagsArray[0] == NULL){
+        echo "</br>";
+    } else if($i === count($tagsArray)-1) { ?>
+        <a href=<?php echo "tags.php?tag_label=".$tagsArray[$i] ?>><?php echo "#".$tagsArray[$i] ?></a>
     <?php } else { ?>
-    <a href=<?php echo "tags.php?tag_label=".$tagsArray[$i] ?>><?php echo "#".$tagsArray[$i] ?></a>,
+        <a href=<?php echo "tags.php?tag_label=".$tagsArray[$i] ?>><?php echo "#".$tagsArray[$i] ?></a>,
     <?php } ?>
 <?php } ?>
 
