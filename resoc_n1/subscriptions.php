@@ -1,8 +1,5 @@
 <?php
-session_start();
-if (!isset($_SESSION['connected_id'])) {
-    header('Location: login.php');
-}
+include_once('session.php');
 ?>
 <!doctype html>
 <html lang="fr">
