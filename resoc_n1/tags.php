@@ -14,7 +14,7 @@ include_once('session.php');
         <div id="wrapper">
             <?php $tagLabel = $_GET['tag_label']; ?>
             <?php include_once('dbconnect.php'); ?>
-
+            <?php include('addlike.php'); ?>
             <aside>
                 <?php
                 $laQuestionEnSql = "SELECT * FROM tags WHERE label= '$tagLabel' ";
@@ -37,6 +37,7 @@ include_once('session.php');
                 $laQuestionEnSql = "
                     SELECT posts.content,
                     posts.created,
+                    posts.id as post_id,
                     users.alias as author_name,  
                     count(likes.id) as like_number,  
                     GROUP_CONCAT(DISTINCT tags.label) AS taglist
@@ -68,7 +69,12 @@ include_once('session.php');
                             <p><?php echo $post['content'] ?></p>
                         </div>                                            
                         <footer>
-                            <small>♥ <?php echo $post['like_number'] ?></small>
+                            <small>
+                                <form action="tags.php?tag_label=<?php echo $_GET['tag_label'] ?>" method="post">
+                                    <input type='hidden' name='post_id' value="<?php echo $post['post_id'] ?>">   
+                                    <input type='submit' value="♥ <?php echo $post['like_number'] ?>">
+                                </form>
+                            </small>
                             <?php include('tagLinks.php') ?>
                         </footer>
                     </article>
