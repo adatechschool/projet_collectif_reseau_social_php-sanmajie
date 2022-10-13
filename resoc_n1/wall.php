@@ -39,6 +39,9 @@ include_once('session.php');
                         (n° <?php echo $userId ?>)
                     </p>
                 </section>
+                <div>
+                <?php include_once('tofollow.php');?>
+                </div>
             </aside>
             <main>
                 <?php

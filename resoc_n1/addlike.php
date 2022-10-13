@@ -1,5 +1,4 @@
 <?php 
-$is_liked = false;
 $like_sent = isset($_POST['post_id']);
 if($like_sent){
     $session_id = $_SESSION['connected_id'];
