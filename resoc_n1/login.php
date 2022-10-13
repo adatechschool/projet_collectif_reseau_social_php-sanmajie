@@ -7,10 +7,10 @@ session_start();
         <meta charset="utf-8">
         <title>ReSoC - Connexion</title> 
         <meta name="author" content="Julien Falconnet">
-        <link rel="stylesheet" href="style.css"/>
+        <link rel="stylesheet" href="style.css">
     </head>
     <body>    
-        <?php include_once('header.php'); ?>
+        <?php include('dbconnect.php'); ?>
 
         <div id="wrapper" >
 
@@ -36,9 +36,6 @@ session_start();
                         $emailAVerifier = $_POST['email'];
                         $passwdAVerifier = $_POST['motpasse'];
 
-
-                        //Etape 3 : Ouvrir une connexion avec la base de donnée.
-                        include('dbconnect.php');
                         //Etape 4 : Petite sécurité
                         // pour éviter les injection sql : https://www.w3schools.com/sql/sql_injection.asp
                         $emailAVerifier = $mysqli->real_escape_string($emailAVerifier);
@@ -55,18 +52,15 @@ session_start();
                         // Etape 6: Vérification de l'utilisateur
                         $res = $mysqli->query($lInstructionSql);
                         $user = $res->fetch_assoc();
-                        if ( ! $user OR $user["password"] != $passwdAVerifier)
-                        {
-                            echo "La connexion a échouée. ";
-                            
-                        } else
-                        {
-                            echo "Votre connexion est un succès : " . $user['alias'] . ".";
+                        if ( ! $user OR $user["password"] != $passwdAVerifier){
+                            echo "<strong><p style='color:red;'>La connexion a échouée.</p></strong>";
+                        } else {
                             // Etape 7 : Se souvenir que l'utilisateur s'est connecté pour la suite
                             // documentation: https://www.php.net/manual/fr/session.examples.basic.php
                             $_SESSION['connected_id']=$user['id'];
                             // header(""Location: wall.php?user_id=" . "$_SESSION['connected_id']"");
                             // end();
+                            header('Location: news.php');
                         }
 
                         
@@ -81,10 +75,8 @@ session_start();
                         </dl>
                         <input type='submit'>
                     </form>
-                    <p>
-                        Pas de compte?
-                        <a href='registration.php'>Inscrivez-vous.</a>
-                    </p>
+                    <h4>Pas de compte ? <u><a href='registration.php'>Inscrivez-vous</a></u>.
+                    </h4>
 
                 </article>
             </main>

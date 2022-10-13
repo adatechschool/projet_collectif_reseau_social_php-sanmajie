@@ -7,7 +7,7 @@
         <link rel="stylesheet" href="style.css"/>
     </head>
     <body>
-        <?php include_once('header.php'); ?>
+        <?php include('dbconnect.php'); ?>
         <div id="wrapper" >
 
             <aside>
@@ -33,6 +33,7 @@
                         $new_email = $_POST['email'];
                         $new_alias = $_POST['pseudo'];
                         $new_passwd = $_POST['motpasse'];
+<<<<<<< HEAD
                         if($new_email=="" OR $new_alias=="" OR $new_passwd==""){
                             echo "<h4> Vous devez remplir tous les champs. </h4>";
                         } else {
@@ -63,6 +64,31 @@
                                 echo "Votre inscription est un succès : " . $new_alias;
                                 echo " <a href='login.php'>Connectez-vous.</a>";
                             }
+=======
+
+                        //Etape 4 : Petite sécurité
+                        // pour éviter les injection sql : https://www.w3schools.com/sql/sql_injection.asp
+                        $new_email = $mysqli->real_escape_string($new_email);
+                        $new_alias = $mysqli->real_escape_string($new_alias);
+                        $new_passwd = $mysqli->real_escape_string($new_passwd);
+                        // on crypte le mot de passe pour éviter d'exposer notre utilisatrice en cas d'intrusion dans nos systèmes
+                        $new_passwd = md5($new_passwd);
+                        // NB: md5 est pédagogique mais n'est pas recommandée pour une vraies sécurité
+                        //Etape 5 : construction de la requete
+                        $lInstructionSql = "INSERT INTO users (id, email, password, alias) "
+                                . "VALUES (NULL, "
+                                . "'" . $new_email . "', "
+                                . "'" . $new_passwd . "', "
+                                . "'" . $new_alias . "'"
+                                . ");";
+                        // Etape 6: exécution de la requete
+                        $ok = $mysqli->query($lInstructionSql);
+                        if ( ! $ok){
+                            echo "<strong><p style='color:red;'>L'inscription a échouée : " . $mysqli->error . ".</p></strong>";
+                        } else {
+                            echo "<strong><p style='color:green;'> Votre inscription est un succès : " . $new_alias . ".</p></strong>";
+                            echo "<h4><a href='login.php'>👉 <u>Connectez-vous</u>.</a></h4>";
+>>>>>>> master
                         }
                     }
                     ?>                     
@@ -78,6 +104,8 @@
                         </dl>
                         <input type='submit'>
                     </form>
+                    <h4>Déjà inscrit(e) ? <u><a href='login.php'>Connectez-vous</a></u>.
+                    </h4>
                 </article>
             </main>
         </div>
