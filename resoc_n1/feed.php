@@ -23,12 +23,6 @@ include_once('session.php');
              */
             $userId = $_SESSION['connected_id'];
             ?>
-            <?php
-            /**
-             * Etape 2: se connecter à la base de donnée
-             */
-            include('dbconnect.php');
-            ?>
 
             <aside>
                 <?php

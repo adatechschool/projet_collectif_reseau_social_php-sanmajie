@@ -11,7 +11,6 @@ include_once('session.php');
     </head>
     <body>
         <?php include_once('header.php'); ?>
-        <?php include_once('dbconnect.php'); ?>
         <div id="wrapper">
             <?php
             /**

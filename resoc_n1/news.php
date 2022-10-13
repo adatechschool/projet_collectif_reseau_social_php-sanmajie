@@ -21,7 +21,6 @@ include_once('session.php');
                 </section>
             </aside>
             <main>
-                <?php include('dbconnect.php'); ?>
                 <?php include('addlike.php'); ?>
                 <?php
                     $laQuestionEnSql = "
@@ -38,8 +37,8 @@ include_once('session.php');
                     LEFT JOIN tags       ON posts_tags.tag_id  = tags.id 
                     LEFT JOIN likes      ON likes.post_id  = posts.id 
                     GROUP BY posts.id
-                    ORDER BY posts.created ASC  
-                    LIMIT 20
+                    ORDER BY posts.created DESC  
+                    LIMIT 30
                     ";
 
                     //LA REQUÊTE SQL ÉXPLIQUÉE :
