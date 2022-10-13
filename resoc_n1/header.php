@@ -2,12 +2,12 @@
 include('dbconnect.php');
 ?>
 <header>
-    <a href='admin.php'><img src="resoc.jpg" alt="Logo de notre réseau social"/></a>
-    <!-- <img src="resoc.jpg" alt="Logo de notre réseau social"/> -->
     <nav id="menu">
+        <a href='admin.php'>Admin</a>
+        <!-- <img src="resoc.jpg" alt="Logo de notre réseau social"/> -->
         <a href="news.php">Actualités</a>
-        <a href="wall.php?user_id=<?php echo $_SESSION['connected_id']; ?>">Mur</a>
-        <a href="feed.php?user_id=<?php echo $_SESSION['connected_id']; ?>">Flux</a>
+        <a href="wall.php?user_id=<?php echo $_SESSION['connected_id']; ?>">Mon mur</a>
+        <a href="feed.php?user_id=<?php echo $_SESSION['connected_id']; ?>">Mon feed</a>
             <select name="choose-a-tag" onchange="location = this.value;">
                 <option selected="yes">Choisissez un mot-clé</option>
                 <?php 
