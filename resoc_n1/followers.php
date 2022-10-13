@@ -26,8 +26,6 @@ include_once('session.php');
                 <?php
                 // Etape 1: récupérer l'id de l'utilisateur
                 $userId = $_SESSION['connected_id'];
-                // Etape 2: se connecter à la base de donnée
-                include_once('dbconnect.php');
                 // Etape 3: récupérer le nom de l'utilisateur
                 $laQuestionEnSql = "
                     SELECT users.*

@@ -13,8 +13,6 @@ include_once('session.php');
         <?php include_once('header.php'); ?>
         <div id="wrapper">
             <?php $tagLabel = $_GET['tag_label']; ?>
-            <?php include_once('dbconnect.php'); ?>
-            <?php include('addlike.php'); ?>
             <aside>
                 <?php
                 $laQuestionEnSql = "SELECT * FROM tags WHERE label= '$tagLabel' ";
@@ -32,12 +30,14 @@ include_once('session.php');
                 </section>
             </aside>
             <main>
+                <?php include('addlike.php'); ?>
                 <?php
                 $currentTagId = $tag['id'];
                 $laQuestionEnSql = "
                     SELECT posts.content,
                     posts.created,
                     posts.id as post_id,
+                    users.id as user_id, 
                     users.alias as author_name,  
                     count(likes.id) as like_number,  
                     GROUP_CONCAT(DISTINCT tags.label) AS taglist

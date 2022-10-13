@@ -19,7 +19,6 @@ include_once('session.php');
                     <p>Sur cette page vous trouverez la liste des personnes dont
                         l'utilisatrice
                     <?php 
-                    include_once('dbconnect.php');
                     $currentUserId = $_SESSION['connected_id'];
                 
                     $currentUser = $mysqli->query("SELECT alias FROM users WHERE users.id = '$currentUserId'")->fetch_assoc();

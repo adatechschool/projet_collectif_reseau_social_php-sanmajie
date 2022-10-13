@@ -37,12 +37,7 @@ include_once('session.php');
                 intval — Retourne la valeur numérique entière
                 _GET — Retourne l'URL en string, selon la valeur en paramétre de GET (derrière le =) 
                 */
-
-                /**
-                 * Etape 2: se connecter à la base de donnée
-                 */
-                include('dbconnect.php'); 
-
+                
                 /**
                  * Etape 3: récupérer le nom de l'utilisateur
                  */

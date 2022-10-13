@@ -7,7 +7,7 @@
         <link rel="stylesheet" href="style.css"/>
     </head>
     <body>
-        <?php include_once('header.php'); ?>
+        <?php include('dbconnect.php'); ?>
         <div id="wrapper" >
 
             <aside>
@@ -34,9 +34,6 @@
                         $new_alias = $_POST['pseudo'];
                         $new_passwd = $_POST['motpasse'];
 
-
-                        //Etape 3 : Ouvrir une connexion avec la base de donnée.
-                        include_once('dbconnect.php');
                         //Etape 4 : Petite sécurité
                         // pour éviter les injection sql : https://www.w3schools.com/sql/sql_injection.asp
                         $new_email = $mysqli->real_escape_string($new_email);
@@ -54,13 +51,11 @@
                                 . ");";
                         // Etape 6: exécution de la requete
                         $ok = $mysqli->query($lInstructionSql);
-                        if ( ! $ok)
-                        {
-                            echo "L'inscription a échouée : " . $mysqli->error;
-                        } else
-                        {
-                            echo "Votre inscription est un succès : " . $new_alias;
-                            echo " <a href='login.php'>Connectez-vous.</a>";
+                        if ( ! $ok){
+                            echo "<strong><p style='color:red;'>L'inscription a échouée : " . $mysqli->error . ".</p></strong>";
+                        } else {
+                            echo "<strong><p style='color:green;'> Votre inscription est un succès : " . $new_alias . ".</p></strong>";
+                            echo "<h4><a href='login.php'>👉 <u>Connectez-vous</u>.</a></h4>";
                         }
                     }
                     ?>                     
@@ -75,6 +70,8 @@
                         </dl>
                         <input type='submit'>
                     </form>
+                    <h4>Déjà inscrit(e) ? <u><a href='login.php'>Connectez-vous</a></u>.
+                    </h4>
                 </article>
             </main>
         </div>
